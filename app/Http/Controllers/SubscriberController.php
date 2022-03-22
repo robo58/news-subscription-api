@@ -15,7 +15,7 @@ class SubscriberController extends Controller
      */
     public function getSubscribers(Request $request)
     {
-        return Subscriber::all()->load(['website']);
+        return Subscriber::all()->load(['websites']);
     }
 
     /**
@@ -28,7 +28,8 @@ class SubscriberController extends Controller
         $validated = $request->validate([
             'email'=>'required|email',
         ]);
-
-        return $website->subscribers()->create($validated);
+        $subscriber = Subscriber::updateOrCreate($validated);
+        $website->subscribers()->syncWithoutDetaching($subscriber);
+        return $subscriber;
     }
 }

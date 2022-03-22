@@ -6,6 +6,7 @@ use App\Jobs\SendEmail;
 use App\Mail\NewPostNotification;
 use App\Models\Post;
 use App\Models\Subscriber;
+use App\Models\Website;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
@@ -41,7 +42,7 @@ class SendEmails extends Command
 
         //send email to subscriber
         $post = Post::find($this->argument('post_id'));
-        $subscribers = Subscriber::where('website_id','=',$post->website_id)->get();
+        $subscribers = Website::find($post->website_id)->subscribers;
         foreach ($subscribers as $subscriber){
             if($subscriber->didNotReceivePost($post)){
                 SendEmail::dispatch($subscriber, $post);

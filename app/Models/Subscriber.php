@@ -12,9 +12,12 @@ class Subscriber extends Model
         'email', 'website_id'
     ];
 
-    public function website(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /**
+     * @return BelongsToMany
+     */
+    public function websites(): BelongsToMany
     {
-        return $this->belongsTo(Website::class);
+        return $this->belongsToMany(Website::class, 'subscriber_website', 'subscriber_id', 'website_id');
     }
 
     /**

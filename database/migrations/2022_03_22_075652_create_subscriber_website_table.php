@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubscribersTable extends Migration
+class CreateSubscriberWebsiteTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateSubscribersTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscribers', function (Blueprint $table) {
+        Schema::create('subscriber_website', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
+            $table->foreignId('subscriber_id')->constrained('subscribers');
+            $table->foreignId('website_id')->constrained('websites');
+            $table->unique(['subscriber_id','website_id']);
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateSubscribersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscribers');
+        Schema::dropIfExists('subscriber_website');
     }
 }
